@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\SYSTEM">
+      <UniqueIdentifier>{0601c5ed-7826-4163-be63-69396eb2ed8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="IEX">
+      <UniqueIdentifier>{9e8d67d2-7ac9-43ab-8c7a-53c6805e2932}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Camera">
+      <UniqueIdentifier>{2655f0c7-65db-4187-b0e3-f19815ff0d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage">
+      <UniqueIdentifier>{1bf5d810-23d7-440e-8d08-1038eb412ff3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{88a9e9c0-a4d3-43f8-8a24-397fe2e8c8fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Enemy">
+      <UniqueIdentifier>{a095de63-38e0-45b8-a401-8777de9efe3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\SceneFiliter">
+      <UniqueIdentifier>{b66e64d6-4708-4f18-b106-575ffa83ab89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\SceneFiliter\SceneLoad">
+      <UniqueIdentifier>{55bf1930-3972-4bd8-8ff6-419fd19c72c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\SceneFiliter\SceneMain">
+      <UniqueIdentifier>{a2a670cd-46a7-4eca-ad0e-d775ee978693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\SceneFiliter\SceneTitle">
+      <UniqueIdentifier>{9c051105-32c0-4aad-b38a-ae9d78c5a795}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\system\Framework.cpp">
+      <Filter>ソース ファイル\SYSTEM</Filter>
+    </ClCompile>
+    <ClCompile Include="source\system\System.cpp">
+      <Filter>ソース ファイル\SYSTEM</Filter>
+    </ClCompile>
+    <ClCompile Include="source\system\WinMain.cpp">
+      <Filter>ソース ファイル\SYSTEM</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_2DObject.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_3DObject.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_Audio.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_Direct3D.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_Input.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_Light.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_Math.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_Mesh.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_Particle.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_Polygon.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_RenderState.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_Shader.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_SkinMesh.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_System.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_Texture.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="IEX\IEX_View.cpp">
+      <Filter>IEX</Filter>
+    </ClCompile>
+    <ClCompile Include="source\sceneMain.cpp">
+      <Filter>ソース ファイル\SceneFiliter\SceneMain</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Stage.cpp">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Camera.cpp">
+      <Filter>ソース ファイル\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Player.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Enemy.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ArtificialIntelligence.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SceneTitle.cpp">
+      <Filter>ソース ファイル\SceneFiliter\SceneTitle</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SceneLoad.cpp">
+      <Filter>ソース ファイル\SceneFiliter\SceneLoad</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Collision.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UI_Texture.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\system\Framework.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="source\system\Scene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="source\system\System.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="IEX\iextreme.h">
+      <Filter>IEX</Filter>
+    </ClInclude>
+    <ClInclude Include="source\sceneMain.h">
+      <Filter>ソース ファイル\SceneFiliter\SceneMain</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Camera.h">
+      <Filter>ソース ファイル\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Stage.h">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Player.h">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Enemy.h">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SceneTitle.h">
+      <Filter>ソース ファイル\SceneFiliter\SceneTitle</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SceneLoad.h">
+      <Filter>ソース ファイル\SceneFiliter\SceneLoad</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Collision.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="source\UI_Texture.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DATA\Shader\3D_Shader.fx" />
+  </ItemGroup>
+</Project>
