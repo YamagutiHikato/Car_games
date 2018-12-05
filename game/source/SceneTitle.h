@@ -38,6 +38,10 @@ private:
 	int startTime;
 	double rpm;
 
+	bool CheckTransMission;//false:AT True :MT
+	int StateMode;
+	int missionTime;
+
 public:
 	sceneTitle() = default;
 	~sceneTitle() = default;
@@ -45,6 +49,8 @@ public:
 	bool Initialize();	//Initialize
 
 	void LightUp();
+
+	void MainGameTransMission();
 
 	//	更新・描画
 	void Update();	//	更新

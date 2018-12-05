@@ -191,7 +191,6 @@ private:
 		http://ae86.s1.xrea.com/4ag/transmission/transmission.htm を参照に改造
 	*/
 	int indexNumber;
-
 	int Inline_Four_Engine[4];	//直列4気筒エンジン用変数
 	int step[4];				//4気筒のシリンダー
 	int MaxPis;			//シリンダー最大割合
@@ -233,7 +232,7 @@ private:
 	Vector3 pointPos;
 	Vector3 WheelAngle;
 	
-	float Getcross;
+	Vector3 Getcross;
 
 public:
 	Car_A_E();
@@ -269,6 +268,7 @@ public:
 	void AI_NodeSystem();
 	void AI_AccelMode();
 	void AI_HandleingMode();
+	void AI_HandleControlMode(Vector3 inputNodeVector);
 
 
 	void Update();						//Update

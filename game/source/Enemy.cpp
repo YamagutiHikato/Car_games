@@ -144,6 +144,7 @@ bool Car_A_E::Init()
 	*/
 	pos = Vector3(2.0f, 1.0f, -53.0f);
 	cross = ZEROVECTOR;
+	Getcross = ZEROVECTOR;
 	/*
 	int
 	*/
@@ -576,7 +577,7 @@ Vector3 Car_A_E::AirResistance()
 	ãÛãCíÔçR
 	*/
 	AirResistanceRealValue = (AirResistanceCoefficient*FrontProjectionAreaOfTheAutomobile*Air_Speed*DensityOfAir) / 2;
-	AirResistanceRealValue /= pow(60, 3);	//åªç›ãÛãCíÔçRåyå∏ñ≥
+	AirResistanceRealValue /= pow(60, 2);	//åªç›ãÛãCíÔçRåyå∏ñ≥
 	return Vector3(sinf(AirResistanceRealValue), 0, cosf(AirResistanceRealValue));
 }
 
@@ -950,10 +951,8 @@ void Car_A_E::Render(iexShader*shader, char*chr)
 		"ç¿ïW:\n"
 		"X:%f\nZ:%f\n"
 		"%f\n"
-		"%f\n"
-		"%f\n"
 
-		, testNode.x, testNode.z, pos.x, pos.z,cross.x, cross.y, cross.z
+		, testNode.x, testNode.z, pos.x, pos.z,Getcross.y
 	);
 	IEX_DrawText(str, 300, 500, 1920, 1080, 0xffffffff);
 

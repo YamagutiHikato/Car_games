@@ -28,7 +28,6 @@ bool sceneLoad::Initialize()
 {
 	iexLight::SetAmbient(0x808080);
 	iexLight::SetFog(800, 1000, 0);
-
 	view = new iexView();
 	LoadTex_A = new iex2DObj("DATA\\Load\\Loading.png");
 	LoadTex_B = new iex2DObj("DATA\\HUD_Texture\\metter2.png");

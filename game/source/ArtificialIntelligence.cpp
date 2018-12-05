@@ -130,35 +130,7 @@ void Car_A_E::AI_NodeSystem()
 		node[i] = NodeLootPoints[i];
 	}
 
-	//ノードと現在座標のベクトル
-	Vector3 RangeVector;
-	RangeVector = node[CatchNodeNumber] - pos;
-	
-	//向きを座標へ
-	Vector3 VectorAngle;
-	VectorAngle.x = sinf(angle.y);
-	VectorAngle.y = 0.0f;
-	VectorAngle.z = cosf(angle.y);
-	//合成
-	Vector3 FrontPoint = VectorAngle ;
-
-	//外積
-	Vector3Cross(cross, FrontPoint,RangeVector);
-	//内積
-	float dot;
-	dot = Vector3Dot(FrontPoint, RangeVector);
-
-	//詳細関係
-	float L1 = sqrtf(pow(VectorAngle.x, 2) + pow(VectorAngle.z, 2));
-	float L2 = sqrtf(pow(RangeVector.x, 2) + pow(RangeVector.z, 2));
-
-	//視野変数
-	float cosValue = dot / (L1*L2);
-
-	//ズレの位置をハンドル回す強さに変える
-	float distAngle = 1.0f - cosValue;
-	if (distAngle > 0.05f)distAngle = 0.05f;
-
+	AI_HandleControlMode(node[CatchNodeNumber]);
 	//ウェイポイントの設定
 	Vector3 NextWaypointVector;
 	if (CatchNodeNumber <= NodeMaxNumber)//最大配列以下
@@ -168,34 +140,25 @@ void Car_A_E::AI_NodeSystem()
 	else
 	{
 		NextWaypointVector = node[0] - pos;//最大の次は0に返す為
+
 	}
 
-	//長さを取得
-	float NextWayPointVectorLength = NextWaypointVector.Length();//  次のwaypointと車両の距離
-	float WayPointVectorLength = RangeVector.Length();			 //現在のwaypointと車両の距離
-
-	testNode = node[CatchNodeNumber];
 	//waypointに範囲を作る　通過した時に未来を見る
 	if (Collision::GetInstance()->ColSphere(pos, 30.0f, node[CatchNodeNumber], 50.0f) == true)
 	{
-		////走行座標から　今目指してるwaypointよりもその次に目指すwaypointの方が遠い場合
-		//if (NextWayPointVectorLength <= WayPointVectorLength)
-		//{
-		//	CatchNodeNumber++;
-		//}
-		////走行座標から　今目指してるwaypointよりもその次に目指すwaypointの方が近い場合
-		//if (NextWayPointVectorLength > WayPointVectorLength)
-		//{
-		//	CatchNodeNumber += 2;
-		//}
 		CatchNodeNumber++;
 	}
+	//waypoint通らずに次の次のwaypointの方が近かった場合の処理
+	//走行座標から　今目指してるwaypointよりもその次に目指すwaypointの方が遠い場合
+	//走行座標から　今目指してるwaypointよりもその次に目指すwaypointの方が近い場合
+
 
 	//最終ノードの次走行継続させる為、初番ノードへ
 	if (NodeMaxNumber <= CatchNodeNumber)
 	{
 		CatchNodeNumber = 0;
 	}	
+	testNode = node[CatchNodeNumber];
 }
 
 void Car_A_E::AI_AccelMode()
@@ -203,7 +166,7 @@ void Car_A_E::AI_AccelMode()
 	//レイ取得用
 	Vector3 out;
 	//車両視認可能射程
-	float dist = 8.0f + (50 * (speed / 300.0f));
+	static float dist = 7.0f + (50 * (speed / 190.0f));
 	//車両正面ベクトル
 	Vector3 frontVectr;
 	frontVectr.x = sinf(angle.y) * dist;
@@ -215,7 +178,7 @@ void Car_A_E::AI_AccelMode()
 	//レイピック
 	if (Collision::GetInstance()->getObj()->RayPick(&out, &pos, &frontVectr, &dist) == -1)//何も無い場合
 	{
-		if (speed <= 140)
+		if (speed <= 10)
 		{
 			AI_Throttle = true;
 			AI_BreakThrottle = false;
@@ -226,31 +189,40 @@ void Car_A_E::AI_AccelMode()
 			AI_BreakThrottle = false;
 		}
 	}
-	else
+	//else
 	{
-		AI_Throttle = false;
-		AI_BreakThrottle = true;
+	//	AI_Throttle = false;
+		//AI_BreakThrottle = true;
 	}
 }
 
+constexpr float Speeder = 1.0f;
 void Car_A_E::AI_HandleingMode()
 {
 	static float ControlSpeed;
+	
 	//内積によるハンドル調整
-	if (cross.y <= -1.0f)
+	if (Getcross.y < -Speeder)//-1.0fより小さいと左に回す
 	{
-		//ControlSpeed -= 0.02f;
+		ControlSpeed -= 0.035f;
 
+		if (ControlSpeed < 1.0f)//左に回す際にタイヤが右の場合、より早く回す
+		{
+			ControlSpeed -= 0.5f;
+		}
 	}
-	if (cross.y >= 1.0f)
+	else if (Getcross.y > Speeder)//1.0fより大きいと右に回す
 	{
-		//ControlSpeed += 0.02f;
+		ControlSpeed += 0.035f;
+		if (ControlSpeed > 1.0f) //右に回す際にタイヤが左の場合、より早く回す
+		{
+			ControlSpeed += 0.5f;
+		}
 	}
-	else  if(cross.z < 1.0f && cross.z>-1.0f)
+	else  if(Getcross.z <= Speeder || Getcross.z >= -Speeder)
 	{
-		//ControlSpeed = 0.0f;
+		ControlSpeed = 0.0f;
 	}
-
 	//限界回転数
 	if (ControlSpeed >= 2.0f)ControlSpeed = 2.0f;
 	if (ControlSpeed <= -2.0f)ControlSpeed = -2.0f;
@@ -259,3 +231,34 @@ void Car_A_E::AI_HandleingMode()
 	PowerSteering(ControlSpeed*SpeedHandle);
 }
 
+void Car_A_E::AI_HandleControlMode(Vector3 inputNodeVector)
+{
+	
+	//向きを座標へ
+	Vector3 VectorAngle;
+	VectorAngle.x = pos.x + sinf(WheelFrontAngle)*14;
+	VectorAngle.y = 0.0f;
+	VectorAngle.z = pos.z + cosf(WheelFrontAngle)*14;
+
+	Vector3 pointerLength;
+	pointerLength.x = inputNodeVector.x - pos.x;
+	pointerLength.y = 0.0f;
+	pointerLength.z = inputNodeVector.z - pos.z;
+	pointerLength.Normalize();
+
+	//外積
+	Vector3Cross(Getcross, VectorAngle, pointerLength);
+	//内積
+	float dot = Vector3Dot(VectorAngle, pointerLength);
+
+	//詳細関係
+	float L1 = sqrtf(pow(VectorAngle.x, 2) + pow(VectorAngle.z, 2));
+	float L2 = sqrtf(pow(pointerLength.x, 2) + pow(pointerLength.z, 2));
+
+	//視野変数
+	float cosValue = dot / (L1*L2);
+
+	//ズレの位置をハンドル回す強さに変える
+	float distAngle = 1.0f - cosValue;
+	if (distAngle > 0.05f)distAngle = 0.05f;
+}

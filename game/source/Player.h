@@ -60,19 +60,18 @@ protected:
 		内部部品
 		エンジン(心臓部分
 	*/
-	iex2DObj*textest;
 	struct Engine_Parts
 	{
+		const int MaxPis = 120;							//シリンダー最大割合
 		/*
 		ピストンとクランクシャフトを連結し、直線往復運動を回転運動に変換、伝導する役目をします。
 		高温、衝撃、高回転のタフな環境下で使用される部品です。
 		*/
-		float ConectingRod;
+		const float ConectingRod=24.0f;
 		/*
 		シリンダーブロックの上に配置し、燃焼ガスの吸気、点火、排気の機能を備えた装置で、コンピュータによる電子制御を行うエンジンが主流です。
 		*/
 		float CyLinderHead[6];
-		float UI_Tex_CyLinderHead[6];
 		/*
 		着火、燃焼によるエネルギーをピストンに伝達し、クランクシャフトに回転力として伝える、内燃機関の中心部品です。
 		*/
@@ -112,20 +111,19 @@ protected:
 		*/
 		void TargetInitialization(float ZeroNum)
 		{
-			ConectingRod = 24.0f;
 			SilinderBlock = ComShaft
 				= CrankShaft = Injecter = Radiator
 				= TimingBelt = ZeroNum;
 			EngineOil = 100;
-			CyLinderHead[0] = 60*0.0f;//1
-			CyLinderHead[1] = 60*0.8f;//2
-			CyLinderHead[2] = 60*0.4f;//3
-			CyLinderHead[3] = 60*1.0f;//4
-			CyLinderHead[4] = 60*0.2f;//5
-			CyLinderHead[5] = 60*0.6f;//6
+			CyLinderHead[0] = MaxPis*0.0f;//1
+			CyLinderHead[1] = MaxPis*0.8f;//2
+			CyLinderHead[2] = MaxPis*0.4f;//3
+			CyLinderHead[3] = MaxPis*1.0f;//4
+			CyLinderHead[4] = MaxPis*0.2f;//5
+			CyLinderHead[5] = MaxPis*0.6f;//6
 		}
 
-	}Engine_parts;
+	}engine_parts;
 	struct Engine_GearMissions
 	{
 		float num, num2;
@@ -161,14 +159,97 @@ protected:
 			CylinderAverages = ArrayMaxNumber =AverageNumber = IdlingAverageNumber =
 				IdlingArrayMaxNumber =(int)ZeroNum;
 		}
-	}Engine_Gearmissions;
+	}engine_Gearmissions;
 
+	//車の基本パラメータ
+	struct Car_Status
+	{
+		int Gear;										//ミッションギア
+		int GearMax;									//ギア最高比
+		int LevLimit;									//レブリミッター
+		double speed;									//加速度
+		float OtationalSpeed;							//回転数
+		float DRR;										//タイヤ直径
+		float ERatio;									//トランスミッション効率
+		float FirnalRGR;								//ファイナルデフ比
+		float RGR;										//デフ比
+		float weght;									//重量
+		float horsePower;								//馬力
+		float Max_HorsePower;							//最高馬力
+		float PowerToWeightRatio;						//パワーウェイトレシオ
+		float torque;									//トルク
+		float MaxTorque;								//最大トルク
+		float EngineDisplacement;						//排気量
+		float torqueMaxOS;								//トルク最高回転数
+		float torquePower;								//トルク・トルク回転数
+		float TheOuterCircumferenceOfTheTire;			//タイヤの外周
+		float FrontProjectionAreaOfTheAutomobile;		//自動車の正面投影面積
+	}car_status;
 
+	//システム系 主に制御系計算など
+	struct Car_Systems
+	{
+		const float HighSpeed = 0.9f;						//AT　高速
+		const float SlowSpeed = 0.8f;						//AT 低速
 
+		int NodeSaveNumber;								//ノード保持変数
+		int ShiftCheakNum;								//シフトチェンジによるシフトエラーを防ぐ代理変数
+		float idlingBreakSpeed;							//アイドリングによる回転数
+		float SpeedHandle;								//スムージングハンドリング
+		float BackThrottle;								//ブレーキの強さ
+		float ShiftChangeLevs;							//ギアチェンジによる変換保持数
+		float BreakingPower;							//ブレｰキスロットル
+		float SubBreakingPower;							//サイドブレーキ
+		float SelecterReductionGearRation;				//減速比　設定型
+		float Throttle;									//アクセルスロットル
+		float ThrottleTacoMetter;						//アクセルスロットルのタコメータ反映型
+		float SpeedMeter;								//回転数引渡用変数
+		float rpm;										//エンジン回転数
+		float AcceleratingForce;						//加速力
+		float crankShaft;								//クランクシャフト
+		float spinNum;									//クランクシャフト回転数
+		float CrankSpinNum;								//クランクシャフト秒間回転数
+		float torqueOtationalSpeed;						//トルク回転数
+		float HalfDRR;									//タイヤの半径
+		float rollingResistance;						//転がり抵抗保管変数
+		float myu;										//ころがり抵抗係数(読:ミュー
+		float metterAngle;								//タコメーター
+		float HandleBar;								//ハンドル
 
-
-
-
+		bool FinalGear;									//最終ギア(ファイナルギア)の接続判定
+		bool StartMove;									//発進合図
+		bool BackCheak;									//後退確認用
+		bool GearDelay;									//ギア遅延
+		float Spring;									//ばね定数
+		float RollStiffness_F, RollStiffness_R;			//ロール剛性Front Rear 
+		float sitaaccel, sitabrake;						//ロールピッチアップ	//!θからsitaに変更よろしく
+		float WheelGrep;								//タイヤ磨耗度	//!タイヤの設定がまだ
+		float hydraulic;								//油圧 //!油圧の設定がまだ
+		float WheelFrontAngle;							//フロントタイヤの角度
+		float RightFrontWheel, LeftFrontWheel, RightRearWheel, LeftRearWheel;//右前輪・左前輪・右後輪・左後輪
+		float MinLength;								//タイヤの1分に進む距離
+		float WheelRpm;									//タイヤの回転数
+		float PowerSlinder;								//パワーシリンダー
+		float KnuckleArm;								//ナックルアーム
+		float centrifugal;								//荷重
+		float Rad;										//旋回角度
+		float Fc;										//遠心力
+		float sita;										//シータ
+		float RollHeight;								//ロールセンターと車高の中心
+		float tread;									//トレッド幅
+		float AnWheelAngle;								//タイヤ逆角度
+	}car_systems;
+	//幾何学
+	struct Geometry
+	{
+		int windSpeed;									//風速
+		float AtmosphericPressure;						//大気圧 海綿上では1013.25hpa 高度10M上昇につれて1hpa
+		float temperature;								//気温
+		float DensityOfAir;								//空気の密度
+		float AirResistanceCoefficient;					//空気抵抗係数
+		float Air_Speed;								//空気抵抗用速度保管変数
+		float AirResistanceRealValue;					//空気抵抗測定数値
+	}geometry;
 	/*
 		Vector3型
 	*/
@@ -177,139 +258,23 @@ protected:
 	Vector3 Front;									//正面
 	Vector3 pos;									//座標
 	Vector3 traction;								//トラクション
-	Vector3 cross;
 
-	/*
-		int型
-	*/
-	int Gear;										//ミッションギア
-	int GearMax;									//ギア最高比
-	
-	int LevLimit;									//レブリミッター
-	int missionMode;								//ATかMTに選択する形式
-	int windSpeed;									//風速
-
-	int stackGear;									//UIの表現ギア保持変数
-	int NodeSaveNumber;								//ノード保持変数
-
-	int MaxPis;			//シリンダー最大割合
-	int IC;				//シリンダーの平均確認用変数
-	int arrayMaxNum;	//平均最大変数
-	int SilinderSpeed;	//毎秒回されるピストン
-	int ShiftCheakNum;	//シフトチェンジによるシフトエラーを防ぐ代理変数
-	
-	int FinalLapTime;
-
-
-	unsigned int color, LevColor;
-
-	double idlingBreakSpeed;
-	double speed;									//加速度
-	double speedTacoMetter;
-	double SpeedHandle;
+	Vector3 cross;									//計算用 外積
 	/*
 		float 型
 	*/
-	float BackThrottle;
-	float ShiftChangeLevs;
-	float OtationalSpeed;							//回転数
-	float BreakingPower;							//ブレｰキスロットル
-	float SubBreakingPower;							//サイドブレーキ
-	float DRR;										//タイヤ直径
-	float ERatio;									//トランスミッション効率
-	float FirnalRGR;								//ファイナルデフ比
-	float HighSpeed;								//AT　高速
-	float MaxSpeed;									//車両最高加速度
-	float RGR;										//デフ比
 	float scale;									//大きさ
-	float SelecterReductionGearRation;				//減速比　設定型
-	float SlowSpeed;								//AT 低速
-	float Throttle;									//アクセルスロットル
-	float ThrottleTacoMetter;						//アクセルスロットルのタコメータ反映型
-	float weght;									//重量
-	float FinalGearRatio;							//ファイナルギア
-	float SpeedMeter;								//回転数引渡用変数
-	float rpm;										//エンジン回転数
-	/*
-	大気圧
-	海綿上では1013.25hpa
-	高度10M上昇につれて1hpa
-	計算上富士山頂で約0.7気圧、高度5,500 m で約0.5気圧、エベレストの頂上では約0.3気圧
-	*/
-	float AtmosphericPressure;
-	float temperature;								//気温
-	float DensityOfAir;								//空気の密度
-	float AirResistanceCoefficient;					//空気抵抗係数
-	float FrontProjectionAreaOfTheAutomobile;		//自動車の正面投影面積
-	float Air_Speed;								//空気抵抗用速度保管変数
-	float AirResistanceRealValue;					//空気抵抗測定数値
-	float AcceleratingForce;						//加速力
-	float horsePower;								//馬力
-	float Max_HorsePower;							//最高馬力
-	float PowerToWeightRatio;						//パワーウェイトレシオ
-	float crankShaft;								//クランクシャフト
-	float spinNum;									//クランクシャフト回転数
-	float CrankSpinNum;								//クランクシャフト秒間回転数
-	float CrankSpinNumTacoMetter;
-	float torque;									//トルク
-	float MaxTorque;								//最大トルク
-	float EngineDisplacement;						//排気量
-	float torqueOtationalSpeed;						//トルク回転数
-	float HalfDRR;									//タイヤの半径
-	float torqueMaxOS;								//トルク最高回転数
-	float torquePower;								//トルク・トルク回転数
-	float rollingResistance;						//転がり抵抗保管変数
-	float myu;											//ころがり抵抗係数(読:ミュー
-	float num;
-
-	float TrgPower_R;
-	float TrgPower_L;
-
-	float metterAngle;		//タコメーター
-	float HandleBar;//ハンドル
-
-	float CrankSpinAverage[18];	//クランクシャフト平均回転数
-	float crankShafter;	//各気筒からシャフトへ回す回転変数
-	float sum;			//平均合計値
-	float averagenumber;//平均保管変数
-
-	float RightFrontWheel, LeftFrontWheel, RightRearWheel, LeftRearWheel;//右前輪・左前輪・右後輪・左後輪
-	float TheOuterCircumferenceOfTheTire;//タイヤの外周
-	float MinLength;//タイヤの1分に進む距離
-	float WheelRpm;//タイヤの回転数
-
-
-	float PowerSlinder;//パワーシリンダー
-	float KnuckleArm;//ナックルアーム
-
-	float centrifugal;//荷重
-	float Rad;//旋回角度
-	float Fc;//遠心力
-	float sita;//シータ
-	float RollHeight;//ロールセンターと車高の中心
-	float tread;//トレッド幅
-	float Spring;//ばね定数
-	float RollStiffness_F, RollStiffness_R;//ロール剛性Front Rear 
-	float θaccel, θbrake;//ロールピッチアップ
-	float WheelGrep;//タイヤ磨耗度
-
-	float hydraulic;//油圧
-
-	float WheelFrontAngle;
-
+	
+	//押し返し
 	float OverBlock;	//押し返しのあがき
 	float wallWeght;//壁の重量 とりあえずコンクリートの重量
 	float weghtRef;//車両重量の8割 都合上8割で返す
 	float wallRef;//壁の重量の8割
-	float DelayCrankShaft;//UI用
 	/*
 		bool型
 	*/
-	bool FinalGear;									//最終ギア(ファイナルギア)の接続判定
-	bool StartMove;									//発進合図
-	bool PowerTex;									//速度・回転数等のモニターチェック
-	bool GearDelay;								//ギア遅延
-	bool BackCheak ;
+
+	bool missionMode;								//false:AT true:MT
 
 	/*
 	レースのやつ
@@ -325,8 +290,8 @@ public:
 	*/
 	iexMesh* GetObj() { return obj; }
 
-	void    SetSpeed(float s) { speed = s; }
-	float	GetSpeed() { return speed; }
+	void    SetSpeed(float s) { car_status.speed = s; }
+	float	GetSpeed() { return car_status.speed; }
 
 	void    SetPos(Vector3 p) { pos = p; }
 	Vector3 GetPos() { return pos; }
@@ -337,36 +302,38 @@ public:
 	void    SetScale(float s) { scale = s; }
 	float	GetScale() { return scale; }
 
+	void SetMMode(bool mm) { missionMode = mm; }
+	bool GetMMode() { return missionMode;}
+
 	/*
 	
 	*/
-	int	GetGear() { return Gear; }
-	int GetLevLimit() { return LevLimit; }
+	int	GetGear() { return car_status.Gear; }
+	int GetLevLimit() { return car_status.LevLimit; }
 	int GetWeeks() { return Weeks; }
-	float	GetSpeedMetter() { return SpeedMeter; }
-	float	GetSpeedAngle() { return metterAngle; }
-	float	GetHandleBar() { return HandleBar; }
-	float   GetRpm() { return rpm; }
-	float   GetThrottle() { return Throttle; }
+	float	GetSpeedMetter() { return car_systems.SpeedMeter; }
+	float	GetSpeedAngle() { return car_systems.metterAngle; }
+	float	GetHandleBar() { return car_systems.HandleBar; }
+	float   GetRpm() { return car_systems.rpm; }
+	float   GetThrottle() { return car_systems.Throttle; }
 	bool GetGoalInChake() { return GoalInCheak; }
-	float GetTacoRenderMetter() { return ThrottleTacoMetter; }
+	float GetTacoRenderMetter() { return car_systems.ThrottleTacoMetter; }
 
 
 	bool Init();									//Initialize
-	void SetSMove(bool sm) { StartMove = sm; }
+	void SetSMove(bool sm) { car_systems.StartMove = sm; }
 
-	float GetEngine_Battery(int n) { return Engine_parts.Battery[n]; }
-	float GetEngine_CylinderHead(int n) { return Engine_parts.CyLinderHead[n]; }
-	float GetEngine_EngineOil() { return Engine_parts.EngineOil; }
-	float GetEngine_Radiator() { return Engine_parts.Radiator; }
+	float GetEngine_Battery(int n) { return engine_parts.Battery[n]; }
+	float GetEngine_CylinderHead(int n) { return engine_parts.CyLinderHead[n]; }
+	float GetEngine_EngineOil() { return engine_parts.EngineOil; }
+	float GetEngine_Radiator() { return engine_parts.Radiator; }
 
-	bool GetGearDelayCheak() { return GearDelay; }
+	bool GetGearDelayCheak() { return car_systems.GearDelay; }
 
-	int GetCrankShaft() { return (int)DelayCrankShaft*10; }
-	int GetHoursePower() { return Max_HorsePower; }
-	float GetTorque() { return torque; }
-	float GetWeght() { return weght; }
-	float GetPowerWeghtRatio() { return PowerToWeightRatio; }
+	int GetHoursePower() { return car_status.Max_HorsePower; }
+	float GetTorque() { return car_status.torque; }
+	float GetWeght() { return car_status.weght; }
+	float GetPowerWeghtRatio() { return car_status.PowerToWeightRatio; }
 
 };
 
@@ -385,19 +352,23 @@ private:
 	/*
 		http://www.iwami.or.jp/wakaba-s/bo-so-menu/bo-so-bnr32_3.htm 　参照
 	*/
+
+	const int Car_cylinder = 6;
+
 	int Inline_Six_Engine[6];	//直列６気筒エンジン用変数
 	int step[6];				//６気筒のシリンダー
 
 	float GearRatio[6];//　BMR R-32のギア比 上記参照
+	float FinalGearRatio;							//ファイナルギア
 
 	Vector3 pointPos;
 	Vector3 TaiyaAngle;
 
 
 
-public:
 	Car_A();
 	~Car_A() = default;
+public:
 
 	bool Init();
 	bool MoveContrl(float max);
@@ -416,8 +387,8 @@ public:
 	void PredictedPosition();//予測位置
 	void SetEnviroment(int wind, float temp)
 	{
-		windSpeed = wind;
-		temperature = temp;
+		geometry.windSpeed = wind;
+		geometry.temperature = temp;
 	}
 
 	float PowerSteering(float HandlePower);

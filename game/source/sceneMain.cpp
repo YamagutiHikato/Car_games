@@ -20,7 +20,7 @@
 
 std::shared_ptr<iexView>view;
 iex2DObj*NumberTex;
-#define AITEST
+//#define AITEST
 /*
 	環境設定
 */
@@ -116,6 +116,8 @@ bool sceneMain::Initialize()
 	Stage::GetInstance()->Init();
 
 	Car_A::GetInstance()->Init();
+
+
 	Car_A_E::GetInstance()->Init();
 	Collision::GetInstance()->Init("DATA\\Stage\\TestStage.IMO");
 
@@ -206,7 +208,7 @@ void	sceneMain::Update()
 
 
 	//AIチェック用
-#ifndef AITEST
+#ifdef AITEST
 	Car_A::GetInstance()->SetPos(Car_A_E::GetInstance()->GetPos());
 	Car_A::GetInstance()->SetAngle(Car_A_E::GetInstance()->GetAngle());
 	Car_A::GetInstance()->SetSpeed(Car_A_E::GetInstance()->GetSpeed());
@@ -356,7 +358,7 @@ void	sceneMain::Render()
 	StartCountTimer = (StartTimer / 60) + 1;
 
 	//	シャドウマップ作成
-	RenderShadowBuffer();
+	//RenderShadowBuffer();
 
 	//スクリーンへ切り替え
 	screen->RenderTarget();
@@ -428,7 +430,6 @@ void	sceneMain::Render()
 
 		DirLight(Vector3(-0.2f, -1, 0), Vector3(0.8,0.8,0.8));
 		CharaLight(Vector3(0.6, 0.6, 0.6));
-		//DirLight(Vector3(-1, -1, 0), Vector3(0, 0, 1));
 
 		//	半球ライト
 		normal->Render(shaderDL, "hemiSpherelight");

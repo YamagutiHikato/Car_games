@@ -158,22 +158,22 @@ void UI::Render()
 	UI作るのも苦労するものもあるので、DebugTextを使ってディスプレイで表示
 	シミュレーションで主に変化起きる・起こせるものなどを表示
 	*/
-	char str[256];
-	sprintf(str,
-		"車両情報:\n"
-		"クランクシャフト平均回転数(アイドリング時の回転数):%d\n"
-		"馬力(クルマの強さ):%d\n"
-		"トルク(kgf):%f\n"
-		"重量(ボディ等の重さ):%f\n"
-		"パワーウェイトレシオ(重量/馬力):%f\n",
-		Car_A::GetInstance()->GetCrankShaft(),
-		Car_A::GetInstance()->GetHoursePower(),
-		Car_A::GetInstance()->GetTorque(),
-		Car_A::GetInstance()->GetWeght(),
-		Car_A::GetInstance()->GetPowerWeghtRatio()
-	);
+	//char str[256];
+	//sprintf(str,
+	//	"車両情報:\n"
+	//	"クランクシャフト平均回転数(アイドリング時の回転数):%d\n"
+	//	"馬力(クルマの強さ):%d\n"
+	//	"トルク(kgf):%f\n"
+	//	"重量(ボディ等の重さ):%f\n"
+	//	"パワーウェイトレシオ(重量/馬力):%f\n",
+	//	Car_A::GetInstance()->GetCrankShaft(),
+	//	Car_A::GetInstance()->GetHoursePower(),
+	//	Car_A::GetInstance()->GetTorque(),
+	//	Car_A::GetInstance()->GetWeght(),
+	//	Car_A::GetInstance()->GetPowerWeghtRatio()
+	//);
 
-	IEX_DrawText(str, 0, 300, 1920, 1080, 0xffffffff);
+	//IEX_DrawText(str, 0, 300, 1920, 1080, 0xffffffff);
 }
 
 //Render Texture Number

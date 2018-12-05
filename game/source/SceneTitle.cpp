@@ -6,6 +6,8 @@
 #include	"sceneMain.h"
 #include    "SceneLoad.h"
 
+#include    "Player.h"
+
 #include <random>
 std::random_device random_d;
 std::mt19937_64 randomSpin(random_d());
@@ -66,6 +68,9 @@ bool sceneTitle::Initialize()
 	startTime = 180;
 	rpm = 0;
 
+	CheckTransMission = false;
+	StateMode = 0;
+	missionTime = 10;
 	return 0;
 }
 
@@ -133,13 +138,41 @@ void sceneTitle::Update()
 	P_obj5	->Update();
 	P_obj6	->Update();
 
-	sceneMain*newScene = new sceneMain();
-	if (KEY_Get(KEY_B) == 3)
+
+	MainGameTransMission();
+
+
+}
+
+void sceneTitle::MainGameTransMission()
+{
+	missionTime--;
+	if (KEY_Get(KEY_B) == 3 && StateMode == 0 && missionTime<=0)
 	{
-		MainFrame->ChangeScene(new sceneLoad(newScene));
+		StateMode = 1;
+		missionTime = 10;
 	}
-
-
+	if (StateMode == 1 && missionTime<=0)
+	{
+		if (KEY_Get(KEY_UP) == 3)
+		{
+			CheckTransMission = false;
+			missionTime = 10;
+		}
+		else if (KEY_Get(KEY_DOWN) == 3 && missionTime<=0)
+		{
+			CheckTransMission = true;
+			missionTime = 10;
+		}
+		if (KEY_Get(KEY_B) == 3 && missionTime<=0)
+		{
+			sceneMain*newScene = new sceneMain();
+			Car_A::GetInstance()->SetMMode(CheckTransMission);
+			MainFrame->ChangeScene(new sceneLoad(newScene));
+			missionTime = 0;
+		}
+		missionTime = 0;
+	}
 }
 
 void sceneTitle::Render()
@@ -161,6 +194,12 @@ void sceneTitle::Render()
 	titleTex->Render(360, 120, TextureSize*2, TextureSize, 0, 0, TextureSize*2, TextureSize);
 	buttonTex->Render(380, 480, TextureSize*2, TextureSize, 0, 0, TextureSize*2, TextureSize,NULL,lightingUpColor);
 
+	char str[256];
+	if(CheckTransMission==false)sprintf(str, "ミッション選択\n"
+		"AT:\n");
+	if (CheckTransMission)sprintf(str, "ミッション選択\n"
+		"MT:\n");
+	IEX_DrawText(str, 300, 500, 1920, 1080, 0xffffffff);
 }
 
 
